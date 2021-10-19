@@ -13,10 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Search\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\WatchIt.Application\WatchIt.Application.csproj" />
     <ProjectReference Include="..\WatchIt.Domain\WatchIt.Domain.csproj" />
   </ItemGroup>
 

@@ -1,17 +1,19 @@
+using System.Reflection;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WatchIt.Application.Common;
+using WatchIt.Application.Extensions;
 using WatchIt.Domain;
 using WatchIt.Domain.Models;
 
 namespace WatchIt.API
 {
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Identity.Web;
     using Microsoft.OpenApi.Models;
 
     public class Startup
@@ -26,6 +28,8 @@ namespace WatchIt.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddApplication();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WatchIt.API", Version = "v1" });
@@ -35,9 +39,13 @@ namespace WatchIt.API
             {
                 options.UseSqlServer(Configuration.GetConnectionString("WatchIt"));
             });
-            //services.AddIdentityCore<ApplicationUser>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(_ =>
+                {
+
+                })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -50,9 +58,8 @@ namespace WatchIt.API
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
+        
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -64,7 +71,7 @@ namespace WatchIt.API
             var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             using var serviceScope = serviceScopeFactory.CreateScope();
             var dbContext = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-            dbContext.Database.EnsureCreated();
+            dbContext?.Database.EnsureCreated();
         }
     }
 }
