@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿namespace WatchIt.Domain.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
-namespace WatchIt.Domain.Models
+public class ApplicationUser : IdentityUser
 {
-    using System.Collections.Generic;
+    public IEnumerable<Like> Likes { get; set; }
 
-    public class ApplicationUser : IdentityUser
-    {
-        public IEnumerable<Like> Likes { get; set; }
-        
-    }
 }

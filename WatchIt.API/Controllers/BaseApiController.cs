@@ -1,17 +1,17 @@
-﻿using MediatR;
+﻿namespace WatchIt.API.Controllers;
+
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WatchIt.API.Controllers
+[ApiController]
+[Route("[controller]")]
+public abstract class BaseApiController : Controller
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class BaseApiController : Controller
-    {
-        public IMediator Mediator { get; set; }
+    public IMediator Mediator { get; set; }
 
-        public BaseApiController(IMediator mediator)
-        {
-            this.Mediator = mediator;
-        }
+    public BaseApiController(IMediator mediator)
+    {
+        this.Mediator = mediator;
     }
 }
+

@@ -1,15 +1,14 @@
-﻿using System.Reflection;
+﻿namespace WatchIt.Application.Extensions;
+
+using System.Reflection;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace WatchIt.Application.Extensions
+public static class ServiceCollectionExtensions
 {
-
-    public static class ServiceCollectionExtensions
+    public static void AddApplication(this IServiceCollection serviceCollection)
     {
-        public static void AddApplication(this IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddMediatR(Assembly.GetExecutingAssembly());
-        }
+        serviceCollection.AddMediatR(Assembly.GetExecutingAssembly());
     }
 }
+
