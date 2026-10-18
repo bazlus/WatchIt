@@ -1,0 +1,800 @@
+{
+  "id": "6db9facf-7f5f-4edd-9066-b67b02a66b2e",
+  "prevId": "b6529d2f-97b1-4076-a2b0-6be0d2cf2055",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.credits": {
+      "name": "credits",
+      "schema": "",
+      "columns": {
+        "movie_id": {
+          "name": "movie_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "person_id": {
+          "name": "person_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "character": {
+          "name": "character",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cast_order": {
+          "name": "cast_order",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "credits_person_idx": {
+          "name": "credits_person_idx",
+          "columns": [
+            {
+              "expression": "person_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "credits_movie_id_movies_id_fk": {
+          "name": "credits_movie_id_movies_id_fk",
+          "tableFrom": "credits",
+          "tableTo": "movies",
+          "columnsFrom": [
+            "movie_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "credits_person_id_people_id_fk": {
+          "name": "credits_person_id_people_id_fk",
+          "tableFrom": "credits",
+          "tableTo": "people",
+          "columnsFrom": [
+            "person_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "credits_movie_id_person_id_role_pk": {
+          "name": "credits_movie_id_person_id_role_pk",
+          "columns": [
+            "movie_id",
+            "person_id",
+            "role"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.movie_translations": {
+      "name": "movie_translations",
+      "schema": "",
+      "columns": {
+        "movie_id": {
+          "name": "movie_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lang": {
+          "name": "lang",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "overview": {
+          "name": "overview",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "movie_translations_movie_id_movies_id_fk": {
+          "name": "movie_translations_movie_id_movies_id_fk",
+          "tableFrom": "movie_translations",
+          "tableTo": "movies",
+          "columnsFrom": [
+            "movie_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "movie_translations_movie_id_lang_pk": {
+          "name": "movie_translations_movie_id_lang_pk",
+          "columns": [
+            "movie_id",
+            "lang"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.movies": {
+      "name": "movies",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "tmdb_id": {
+          "name": "tmdb_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "imdb_id": {
+          "name": "imdb_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "original_title": {
+          "name": "original_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "original_language": {
+          "name": "original_language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "release_date": {
+          "name": "release_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "release_year": {
+          "name": "release_year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "runtime_min": {
+          "name": "runtime_min",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "genres": {
+          "name": "genres",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'"
+        },
+        "keywords": {
+          "name": "keywords",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'"
+        },
+        "overview": {
+          "name": "overview",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tagline": {
+          "name": "tagline",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "poster_path": {
+          "name": "poster_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "backdrop_path": {
+          "name": "backdrop_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vote_count": {
+          "name": "vote_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
+        "vote_average": {
+          "name": "vote_average",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "popularity": {
+          "name": "popularity",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "embedding": {
+          "name": "embedding",
+          "type": "halfvec(1024)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "embedding_model": {
+          "name": "embedding_model",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tmdb_synced_at": {
+          "name": "tmdb_synced_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "movies_embedding_idx": {
+          "name": "movies_embedding_idx",
+          "columns": [
+            {
+              "expression": "embedding",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last",
+              "opclass": "halfvec_cosine_ops"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "hnsw",
+          "with": {}
+        },
+        "movies_vote_count_idx": {
+          "name": "movies_vote_count_idx",
+          "columns": [
+            {
+              "expression": "vote_count",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "movies_synced_at_idx": {
+          "name": "movies_synced_at_idx",
+          "columns": [
+            {
+              "expression": "tmdb_synced_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "movies_tmdb_id_unique": {
+          "name": "movies_tmdb_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "tmdb_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.people": {
+      "name": "people",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "tmdb_id": {
+          "name": "tmdb_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "profile_path": {
+          "name": "profile_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "people_tmdb_id_unique": {
+          "name": "people_tmdb_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "tmdb_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.ratings": {
+      "name": "ratings",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "movie_id": {
+          "name": "movie_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rating": {
+          "name": "rating",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source": {
+          "name": "source",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'manual'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ratings_user_id_users_id_fk": {
+          "name": "ratings_user_id_users_id_fk",
+          "tableFrom": "ratings",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "ratings_movie_id_movies_id_fk": {
+          "name": "ratings_movie_id_movies_id_fk",
+          "tableFrom": "ratings",
+          "tableTo": "movies",
+          "columnsFrom": [
+            "movie_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "ratings_user_id_movie_id_pk": {
+          "name": "ratings_user_id_movie_id_pk",
+          "columns": [
+            "user_id",
+            "movie_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.user_prefs": {
+      "name": "user_prefs",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "genres": {
+          "name": "genres",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'"
+        },
+        "moods": {
+          "name": "moods",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'"
+        },
+        "languages": {
+          "name": "languages",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_prefs_user_id_users_id_fk": {
+          "name": "user_prefs_user_id_users_id_fk",
+          "tableFrom": "user_prefs",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.user_taste": {
+      "name": "user_taste",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cluster": {
+          "name": "cluster",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "weight": {
+          "name": "weight",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "taste": {
+          "name": "taste",
+          "type": "halfvec(1024)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "user_taste_user_id_users_id_fk": {
+          "name": "user_taste_user_id_users_id_fk",
+          "tableFrom": "user_taste",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "user_taste_user_id_cluster_pk": {
+          "name": "user_taste_user_id_cluster_pk",
+          "columns": [
+            "user_id",
+            "cluster"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.watched": {
+      "name": "watched",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "movie_id": {
+          "name": "movie_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "watched_on": {
+          "name": "watched_on",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "watched_user_idx": {
+          "name": "watched_user_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "movie_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "watched_user_id_users_id_fk": {
+          "name": "watched_user_id_users_id_fk",
+          "tableFrom": "watched",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "watched_movie_id_movies_id_fk": {
+          "name": "watched_movie_id_movies_id_fk",
+          "tableFrom": "watched",
+          "tableTo": "movies",
+          "columnsFrom": [
+            "movie_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.watchlist": {
+      "name": "watchlist",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "movie_id": {
+          "name": "movie_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "added_at": {
+          "name": "added_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "watchlist_user_id_users_id_fk": {
+          "name": "watchlist_user_id_users_id_fk",
+          "tableFrom": "watchlist",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "watchlist_movie_id_movies_id_fk": {
+          "name": "watchlist_movie_id_movies_id_fk",
+          "tableFrom": "watchlist",
+          "tableTo": "movies",
+          "columnsFrom": [
+            "movie_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "watchlist_user_id_movie_id_pk": {
+          "name": "watchlist_user_id_movie_id_pk",
+          "columns": [
+            "user_id",
+            "movie_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
